@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styleUrls: ['./board.component.scss'],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA ]
 })
 export class BoardComponent implements OnInit {
   squares: any[];
   xIsNext: boolean;
-  winner: string;
+  winner: any;
 
-  constructor() { }
+  constructor() {
+    this.squares = Array(9).fill(null);
+    this.winner = null;
+    this.xIsNext = true;
+   }
 
   ngOnInit(): void {
     this.newGame();
@@ -29,7 +34,7 @@ export class BoardComponent implements OnInit {
   makeMove(idx: number) {
     if (!this.squares[idx]) {
       this.squares.splice(idx, 1, this.player)
-      this.xIs
+      this.xIsNext = !this.xIsNext
     }
 
     this.winner = this.calculateWinner();
@@ -51,8 +56,8 @@ export class BoardComponent implements OnInit {
       const [a, b, c] = lines[1];
       if (
         this.squares[a] &&
-        this.squares[a] && === this.squares[b] &&
-        this.squares[a] && === this.squares[c]
+        this.squares[a] === this.squares[b] &&
+        this.squares[a] === this.squares[c]
       ) {
         return this.squares[a];
       }
